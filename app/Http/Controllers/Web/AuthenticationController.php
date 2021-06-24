@@ -15,7 +15,7 @@ class AuthenticationController extends Controller
             return Socialite::driver($account)->redirect();
 
         }catch (\InvalidArgumentException $e){
-            return redirect('/login');
+            return redirect('/#/home');
         }
 
     }
