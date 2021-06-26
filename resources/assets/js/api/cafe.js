@@ -13,15 +13,23 @@ export default {
         return axios.get(ROAST_CONFIG.API_URL + '/cafes/' + cafeID);
     },
 
-    postAddNewCafe: function (name, address, city, state, zip) {
+    postAddNewCafe: function (name, locations, website, description, roaster) {
         return axios.post(ROAST_CONFIG.API_URL + '/cafes',
             {
                 name: name,
-                address: address,
-                city: city,
-                state: state,
-                zip: zip
+                locations: locations,
+                website: website,
+                description: description,
+                roaster: roaster
             }
         );
+    },
+    //喜欢咖啡店
+    postLikeCafe:function (cafeID) {
+            return axios.post(ROAST_CONFIG.API_URL + '/cafes/' + cafeID + '/like');
+    },
+    //取消喜欢咖啡店
+    deleteLikeCafe: function (cafeID) {
+        return axios.delete(ROAST_CONFIG.API_URL + '/cafes/' + cafeID + '/like');
     }
 }

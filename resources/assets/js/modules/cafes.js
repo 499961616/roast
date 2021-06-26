@@ -25,7 +25,13 @@ export const cafes = {
         cafeLoadStatus: 0,
 
         //咖啡店添加状态
-        cafeAddStatus: 0
+        cafeAddStatus: 0,
+        //喜欢咖啡店状态
+        cafeLikeActionStatus: 0,
+        //取消喜欢咖啡店状态
+        cafeUnlikeActionStatus: 0,
+
+        cafeLiked: false
     },
     /**
      * Defines the actions used to retrieve the data.
@@ -59,11 +65,12 @@ export const cafes = {
                 });
 
         },
+
         addCafe( { commit, state, dispatch }, data ){
             // 状态1表示开始添加
             commit( 'setCafeAddStatus', 1 );
 
-            CafeAPI.postAddNewCafe( data.name, data.address, data.city, data.state, data.zip )
+            CafeAPI.postAddNewCafe(data.name, data.locations, data.website, data.description, data.roaster)
                 .then( function( response ){
                     // 状态2表示添加成功
                     commit( 'setCafeAddStatus', 2 );
@@ -72,6 +79,19 @@ export const cafes = {
                 .catch( function(){
                     // 状态3表示添加失败
                     commit( 'setCafeAddStatus', 3 );
+                });
+        },
+
+        likeCafe({ commit ,state},data){
+            commit('setCafeLikeActionStatus',1);
+
+            CafeAPI.postAddNewCafe(data.id)
+                .then(function (response) {
+                    commit('setCafeLikedStatus', false);
+                    commit('setCafeUnlikeActionStatus', 2);
+                })
+                .catch(function () {
+                    commit('setCafeUnlikeActionStatus', 3);
                 });
         }
     },
@@ -96,7 +116,19 @@ export const cafes = {
         },
         setCafeAddStatus(state, status) {
             state.cafeAddStatus = status;
+        },
+        setCafeLikedStatus(state, status) {
+            state.cafeLiked = status;
+        },
+
+        setCafeLikeActionStatus(state, status) {
+            state.cafeLikeActionStatus = status;
+        },
+
+        setCafeUnlikeActionStatus(state, status) {
+            state.cafeUnlikeActionStatus = status;
         }
+
     },
     /**
      * Defines the getters used by the module
@@ -119,6 +151,17 @@ export const cafes = {
         },
         getCafeAddStatus( state) {
             return state.cafeAddStatus;
+        },
+        getCafeLikedStatus( state ){
+            return state.cafeLiked;
+        },
+
+        getCafeLikeActionStatus( state ){
+            return state.cafeLikeActionStatus;
+        },
+
+        getCafeUnlikeActionStatus( state ){
+            return state.cafeUnlikeActionStatus;
         }
     }
 };
